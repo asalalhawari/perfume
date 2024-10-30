@@ -6,8 +6,12 @@
   <title>Schedule Drive</title>
 
   <!-- Google Font: Source Sans Pro -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+
   @include('layouts.head')
-  
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
@@ -37,8 +41,8 @@
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">@yield('title_page1')</a></li>
-              <li class="breadcrumb-item active"><a href="#">@yield('title_page2')</a></li>
+              {{-- <li class="breadcrumb-item"><a href="#">@yield('title_page1')</a></li>
+              <li class="breadcrumb-item active"><a href="#">@yield('title_page2')</a></li> --}}
             </ol>
           </div><!-- /.col -->
         </div><!-- /.row -->
@@ -63,5 +67,15 @@
 
 <!-- jQuery -->
 @include('layouts.footer-scripts')
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<!-- داخل قسم <head> في ملف layouts/app.blade.php -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    
 </body>
 </html>

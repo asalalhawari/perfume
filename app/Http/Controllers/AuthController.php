@@ -1,85 +1,95 @@
 <?php
- 
+
 namespace App\Http\Controllers;
- 
-use Illuminate\Http\Request;
+
 use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\ValidationException;
- 
+
 class AuthController extends Controller
 {
- 
-    public function __construct()
-    {
-        $this->middleware('guest')->except('logout');
-    }
- 
+    // عرض صفحة التسجيل
     public function register()
     {
-        return view('auth/register');
+        return view('register');
     }
- 
-    public function registerSave(Request $request)
+
+    // معالجة بيانات التسجيل
+    public function registerPost(Request $request)
     {
-        Validator::make($request->all(), [
-            'name' => 'required',
-            'email' => 'required|email',
-            'password' => 'required|confirmed'
-        ])->validate();
- 
-        User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'type' => "0"
+        // التحقق من صحة البيانات
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:8|confirmed',
+            'profile_picture' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'shipping_address' => 'required|string|max:255',
+            'phone_number' => 'required|string|max:15',
         ]);
- 
-        return redirect()->route('login');
+
+        if ($validator->fails()) {
+            return back()->withErrors($validator)->withInput();
+        }
+
+        // تخزين صورة الملف الشخصي إذا كانت موجودة
+        $profilePicturePath = null;
+        if ($request->hasFile('profile_picture')) {
+            $profilePicturePath = $request->file('profile_picture')->store('profile_pictures');
+        }
+
+        // إنشاء المستخدم
+        $user = new User();
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->password = Hash::make($request->password);
+        $user->profile_picture = $profilePicturePath;
+        $user->shipping_address = $request->shipping_address;
+        $user->phone_number = $request->phone_number;
+
+        $user->save();
+
+        // إعادة توجيه المستخدم إلى صفحة تسجيل الدخول بعد التسجيل الناجح
+        return redirect()->route('login')->with('success', 'تم التسجيل بنجاح، يرجى تسجيل الدخول.');
     }
- 
+
+    // عرض صفحة تسجيل الدخول
     public function login()
     {
-        return view('auth/login');
+        return view('login');
     }
- 
-    public function loginAction(Request $request)
+
+    // معالجة بيانات تسجيل الدخول
+    public function loginPost(Request $request)
     {
-        Validator::make($request->all(), [
-            'email' => 'required|email',
-            'password' => 'required'
-        ])->validate();
- 
-        if (!Auth::attempt($request->only('email', 'password'), $request->boolean('remember'))) {
-            throw ValidationException::withMessages([
-                'email' => trans('auth.failed')
-            ]);
+        // التحقق من صحة البيانات
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|string|email',
+            'password' => 'required|string',
+        ]);
+
+        if ($validator->fails()) {
+            return back()->withErrors($validator)->withInput();
         }
- 
-        $request->session()->regenerate();
- 
-        if (auth()->user()->type == 'admin') {
-            return redirect()->route('admin/home');
-        } else {
-            return redirect()->route('home');
+
+        // محاولة تسجيل الدخول
+        $credentials = [
+            'email' => $request->email,
+            'password' => $request->password,
+        ];
+
+        if (Auth::attempt($credentials)) {
+            return redirect('/home')->with('success', 'Login Success');
         }
-         
-        return redirect()->route('dashboard');
+
+        return back()->with('error', 'Error Email or Password');
     }
- 
-    public function logout(Request $request)
+
+    // تسجيل الخروج
+    public function logout()
     {
-        Auth::guard('web')->logout();
- 
-        $request->session()->invalidate();
- 
-        return redirect('/login');
-    }
- 
-    public function profile()
-    {
-        return view('userprofile');
+        Auth::logout();
+        return redirect()->route('login');
     }
 }

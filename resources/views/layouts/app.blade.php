@@ -8,8 +8,8 @@
     <!-- إضافة Bootstrap من CDN -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet"> <!-- تضمين ملفات CSS الخاصة بك -->
-<script src="{{ asset('js/app.js') }}" defer></script> <!-- تضمين ملفات JavaScript الخاصة بك -->
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet"> 
+<script src="{{ asset('js/app.js') }}" defer></script>
 
 </head>
 <body>
@@ -24,7 +24,7 @@
                 
                 <!-- روابط للأوامر وعناصر الأوامر -->
                 <li class="nav-item"><a class="nav-link" href="{{ route('orders.index') }}">Orders</a></li>
-                <li class="nav-item"><a class="nav-link" href="{{ route('order_items.index') }}">Order Items</a></li>
+                {{-- <li class="nav-item"><a class="nav-link" href="{{ route('order_items.index') }}">Order Items</a></li> --}}
             </ul>
             
         </nav>

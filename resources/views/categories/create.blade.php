@@ -1,6 +1,7 @@
 <!-- resources/views/categories/create.blade.php -->
+@extends('layouts.master') 
 
-@extends('layouts.app')
+{{-- @extends('layouts.app') --}}
 
 @section('content')
     <h1>Create Category</h1>

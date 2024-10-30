@@ -9,10 +9,17 @@ class User extends Authenticatable
 {
     use HasFactory, Notifiable;
 
-    // باقي الكود...
+    protected $fillable = [
+        'name',
+        'email',
+        'password',
+        'shipping_address',
+        'phone_number',
+    ];
 
-    public function orders()
-    {
-        return $this->hasMany(Order::class);
-    }
+    protected $hidden = [
+        'password',
+        'remember_token',
+    ];
+
 }

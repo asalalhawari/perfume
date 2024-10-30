@@ -1,17 +1,15 @@
 <!-- resources/views/brands/index.blade.php -->
 
-@extends('layouts.app')
-
+@extends('layouts.master')
 @section('content')
     <div class="container">
         <h1 class="my-4">Brands</h1>
         <a href="{{ route('brands.create') }}" class="btn btn-primary mb-3">Create New Brand</a>
-        
-        <table class="table table-striped">
+        <table class="table table-striped"> 
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Name</th>
+                    <th>Name</th>                 
                     <th>Actions</th>
                 </tr>
             </thead>
